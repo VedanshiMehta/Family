@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarAddFamily"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:theme="@style/Base.Theme.AppCompat.Light"
+            android:background="@color/colorGrey"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:title="Add Family"/>
+
+        <EditText
+            android:id ="@+id/editTextFatherName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size50"
+            android:layout_marginTop="@dimen/size20"
+            android:hint="@string/enterFather"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:paddingHorizontal="20dp"
+            android:background="@drawable/shape_rect_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarAddFamily"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/size20"
+        />
+        <EditText
+            android:id="@+id/editTextMotherName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size50"
+            android:layout_marginTop="@dimen/size20"
+            android:hint="@string/enterMother"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:paddingHorizontal="20dp"
+            android:background="@drawable/shape_rect_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/editTextFatherName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/size20"
+        />
+        <EditText
+            android:id="@+id/editTextAddress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size50"
+            android:layout_marginTop="@dimen/size20"
+            android:hint="@string/enterAddress"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:paddingHorizontal="@dimen/size20"
+            android:background="@drawable/shape_rect_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/editTextMotherName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/size20"
+        />
+        <Button
+            android:id="@+id/buttonAddChild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:text="@string/addChlid"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="@dimen/size20"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAddress"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutAddEditText"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/size20"
+            android:layout_marginHorizontal="@dimen/size20"
+            app:layout_constraintTop_toBottomOf="@+id/buttonAddChild"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGreen"
+            android:text="@string/save"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="@dimen/size20"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutAddEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout >
+</ScrollView>

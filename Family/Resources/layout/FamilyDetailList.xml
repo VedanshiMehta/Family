@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/size20">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size150"
+        android:id="@+id/cardViewFamilyDetails"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/size10">
+
+            <TextView
+                android:id="@+id/textViewFather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fatherName"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewFatherName"
+                app:layout_constraintBottom_toTopOf="@+id/textViewMother"/>
+
+            <TextView
+                android:id="@+id/textViewFatherName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewFather"
+                android:layout_marginLeft="@dimen/size10"/>
+
+            <TextView
+                android:id="@+id/textViewMother"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/motherName"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/size5"
+                app:layout_constraintTop_toBottomOf="@+id/textViewFather"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/textViewMotherName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size5"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toBottomOf="@+id/textViewFatherName"
+                app:layout_constraintStart_toEndOf="@+id/textViewMother"
+                android:layout_marginLeft="@dimen/size10"/>
+
+            <TextView
+                android:id="@+id/textViewChild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/childName"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/size5"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMother"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/textViewChildName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size5"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMotherName"
+                app:layout_constraintStart_toEndOf="@+id/textViewChild"
+                android:layout_marginLeft="@dimen/size10"/>
+
+
+            <TextView
+                android:id="@+id/textViewAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/size5"
+                app:layout_constraintTop_toBottomOf="@+id/textViewChildName"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/textViewAddressName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size5"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toBottomOf="@+id/textViewChildName"
+                app:layout_constraintStart_toEndOf="@+id/textViewAddress"
+                app:layout_constraintEnd_toStartOf="@drawable/ic_delete"
+                android:layout_marginLeft="@dimen/size10"/>
+
+            <ImageView
+                android:id="@+id/imageViewDelete"
+                android:layout_width="@dimen/size50"
+                android:layout_height="@dimen/size50"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAddressName"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
