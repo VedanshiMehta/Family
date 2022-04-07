@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Family.Model;
 using SQLite;
+using SQLiteNetExtensions.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,106 +20,127 @@ namespace Family
     {
         public static string DBName = "SQLite.db3";
         public static string DBPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), DBName);
-        SQLiteConnection sQLiteConnection;
+         public SQLiteConnection sQLiteConnection;
 
         public FamilyDatabase()
         {
-            try {
-
+            try
+            {
                 Console.WriteLine(DBPath);
                 sQLiteConnection = new SQLiteConnection(DBPath);
-                Console.WriteLine("Sucessfully Database Created");
+                Console.WriteLine("Database Created Successfully");
+            }
+            catch (Exception ex)
+            {
 
+                Console.WriteLine(ex);
+            }
+
+        }
+        public void CreateFamily()
+        {
+
+            try
+            {
+
+                var created = sQLiteConnection.CreateTable<FamilyDetail>();
+                var createChild = sQLiteConnection.CreateTable<ChildData>();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        public bool InstertFamily(FamilyDetail familyDetails)
+        {
+
+            var insert = sQLiteConnection.Insert(familyDetails);
+            foreach (ChildData child in familyDetails.ChildData)
+            {
+                sQLiteConnection.Insert(child);
+            }
+            if (familyDetails.ChildData.Count > 0)
+                sQLiteConnection.UpdateWithChildren(familyDetails);
+            if (insert == -1)
+            {
+                return false;
+            }
+            else
+            {
+
+
+                Console.WriteLine("Data Inserted Successfully");
+                return true;
+            }
+
+
+
 
         }
 
-        public void CreateFamily()
+        public bool UpdateFamily(FamilyDetail familyDetails, int id)
+        {
+            familyDetails.id = id;
+            var insert = sQLiteConnection.Update(familyDetails);
+            foreach (ChildData child in familyDetails.ChildData)
+            {
+                sQLiteConnection.Update(child);
+            }
+            if (familyDetails.ChildData.Count > 0)
+                sQLiteConnection.UpdateWithChildren(familyDetails);
+            if (insert == -1)
+            {
+                return false;
+            }
+            else
+            {
+
+                Console.WriteLine("Data Updated Successfully");
+                return true;
+            }
+
+        }
+
+        public bool DeleteFamily(FamilyDetail familyDetails)
+        {
+            var insert = sQLiteConnection.Delete(familyDetails);
+            if (insert == -1)
+            {
+                return false;
+            }
+            else
+            {
+
+                Console.WriteLine("Data Inserted Successfully");
+                return true;
+            }
+
+        }
+
+        public List<FamilyDetail> ReadFamily()
         {
             try
             {
-                var create = sQLiteConnection.CreateTable<FamilyDetails>();
+                //var familyDetails = sQLiteConnection.Table<FamilyDetail>().ToList();
+                var familyDetails = sQLiteConnection.GetAllWithChildren<FamilyDetail>().ToList();
+                return familyDetails;
             }
-            catch(Exception ex)
+
+            catch (Exception ex)
             {
-
-                Console.WriteLine(ex); 
-            }
-      
-        }
-
-        public bool InsertData(FamilyDetails familyDetails)
-        {
-            var insert = sQLiteConnection.Insert(familyDetails);
-            if(insert == -1)
-            {
-
-                return false;
-            }
-            else
-            {
-                Console.WriteLine("Inserted Data Successfully");
-                return true;
-            }
-      
-        }
-
-        public bool UpdateData(FamilyDetails familyDetails)
-        {
-            var update = sQLiteConnection.Update(familyDetails);
-            if (update == -1)
-            {
-
-                return false;
-            }
-            else
-            {
-                Console.WriteLine("Updated Data Successfully");
-                return true;
+                Console.WriteLine("Database Exception:" + ex);
+                return null;
             }
 
         }
 
-        public bool DeleteData(FamilyDetails familyDetails)
+        public FamilyDetail GetByFamilyId(int familyid)
         {
-            var delete = sQLiteConnection.Delete(familyDetails);
-            return true;
+            var userId = sQLiteConnection.GetAllWithChildren<FamilyDetail>().Where(u => u.id == familyid).FirstOrDefault();
+
+            return userId;
 
         }
-
-        public List<FamilyDetails> GetData()
-        {
-            
-                 var data = sQLiteConnection.Table<FamilyDetails>().ToList();
-                return data;
-
-           
-            
-           
-            
-
-
-        }
-
-          public FamilyDetails GetFamilyDataByFatherName(string familyfather)
-        {
-
-            var family = sQLiteConnection.Table<FamilyDetails>().Where(u => u.fatherName == familyfather).FirstOrDefault();
-            return family;
-
-        }
-
-        public FamilyDetails GetFamilyDataByFamilyID(int familyid)
-        {
-
-            var familyDetails = sQLiteConnection.Table<FamilyDetails>().Where(u => u.fid == familyid).FirstOrDefault();
-            return familyDetails;
-
-        }
-
     }
 }

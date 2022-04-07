@@ -7,6 +7,7 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.ConstraintLayout.Widget;
 using Family.Model;
+using SQLiteNetExtensions.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,17 @@ namespace Family
         private EditText _fatherName;
         private EditText _motherName;
         private EditText _address;
-        private FamilyDetails _familyDetails;
+        private FamilyDetail _familyDetails;
         private EditText _childName;
         private Button _addChild;
         private Button _save;
         private FamilyDatabase _familyDatabase;
         private LinearLayout _linearLayout;
         private List<EditText> _editTextChildrenData = new List<EditText>();
+        private List<string> _data = new List<string>();
+        private ChildData _childData;
+       // private ChildDatabase _childDatabase;
+        private List<ChildData> _childDatas = new List<ChildData>();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -37,6 +42,8 @@ namespace Family
             SetContentView(Resource.Layout.addFamilyLayout);
             _familyDatabase = new FamilyDatabase();
             _familyDatabase.CreateFamily();
+           // _childDatabase = new ChildDatabase();
+            //_childDatabase.CreateChild();
             UIReferences();
             UIClickEvents();
 
@@ -61,27 +68,36 @@ namespace Family
 
         private void _save_Click(object sender, EventArgs e)
         {
-            _familyDetails = new FamilyDetails();
+            _familyDetails = new FamilyDetail();
 
             _familyDetails.fatherName = _fatherName.Text;
             _familyDetails.motherName = _motherName.Text;
             _familyDetails.address = _address.Text;
 
 
-
             for (int i = 0; i < _editTextChildrenData.Count; i++)
             {
+                if (_editTextChildrenData[i] != null)
+                {
 
-                _familyDetails.childName = _editTextChildrenData[i].Text.ToString();
+                    _childData = new ChildData();
+
+                    _childData.childName = _editTextChildrenData[i].Text.ToString();
+                    _childData.familyid = _familyDetails.id;
+                    _childData.childid = i + 1;
+
+                    //var insertChild = _childDatabase.InstertChild(_childData);
+
+                    _childDatas.Add(_childData);
+
+                }
 
 
             }
 
-           
+            _familyDetails.ChildData = _childDatas;
 
-
-
-            var inserted = _familyDatabase.InsertData(_familyDetails);
+            var inserted = _familyDatabase.InstertFamily(_familyDetails);
             if (inserted == true)
             {
 
@@ -93,6 +109,12 @@ namespace Family
                 Toast.MakeText(this, "Data Insertion failed", ToastLength.Short).Show();
 
             }
+
+
+
+
+            //_familyDatabase.sQLiteConnection.UpdateWithChildren(_familyDetails);
+           //var insertFamily = _familyDatabase.InstertFamily(_familyDetails);
 
             StartActivity(new Intent(this, typeof(MainActivity)));
         }
@@ -111,10 +133,10 @@ namespace Family
                 _childName = _edittextView.FindViewById<EditText>(Resource.Id.editTextChildName);
 
 
+
             }
 
             _editTextChildrenData.Add(_childName);
-
 
         }
 

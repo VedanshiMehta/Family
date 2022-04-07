@@ -20,55 +20,61 @@ namespace Family
         private EditText _fatherNameU;
         private EditText _motherNameU;
         private EditText _addressU;
-        private FamilyDetails _familyDetails;
+        private FamilyDetail _familyDetails;
         private EditText _childNameU;
         private Button _addChildU;
         private Button _update;
         private FamilyDatabase _familyDatabase;
         List<EditText> _editTextChildnameU = new List<EditText>();
         private LinearLayout _linearLayoutU;
+        private ChildData _childDataU;
+        private List<ChildData> _childDatasU = new List<ChildData>();
+        int ids = 0;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.familyUpdate);
             UIReferences();
-            UIClickEvents();
 
-            var inflater = LayoutInflater.From(this).Inflate(Resource.Layout.updateChildEdittextLayout, null);
-            _linearLayoutU.AddView(inflater, _linearLayoutU.ChildCount);
-
-
-            for (int i = 0; i < _linearLayoutU.ChildCount; i++)
+            if (Intent.HasExtra("Familyid"))
             {
-                View _edittextView = _linearLayoutU.GetChildAt(i);
+                ids = Intent.Extras.GetInt("Familyid", 0);
 
-                _childNameU = _edittextView.FindViewById<EditText>(Resource.Id.editTextUpdateChildName);
-                _editTextChildnameU.Add(_childNameU);
+                _familyDatabase = new FamilyDatabase();
 
-            }
+                _familyDetails = _familyDatabase.GetByFamilyId(ids);
 
-            if (Intent.Extras != null)
-            {
-                int id = Intent.Extras.GetInt("Familyid", 0);
-                if (id != 0)
+                _motherNameU.Text = _familyDetails.motherName;
+                _addressU.Text = _familyDetails.address;
+                _fatherNameU.Text = _familyDetails.fatherName;
+
+                Console.WriteLine(_familyDetails.ChildData);
+
+                List<string> _child = new List<string>();
+                _child = _familyDetails.ChildData.Select(x => x.childName).ToList();
+
+                for (int i = 0; i < _child.Count; i++)
                 {
+                    var inflater = LayoutInflater.From(this).Inflate(Resource.Layout.updateChildEdittextLayout, null);
+                    _linearLayoutU.AddView(inflater, _linearLayoutU.ChildCount);
 
+                    for (int j = 0; j < _linearLayoutU.ChildCount; j++)
+                    {
+                        View _edittextView = _linearLayoutU.GetChildAt(j);
 
+                        _childNameU = _edittextView.FindViewById<EditText>(Resource.Id.editTextUpdateChildName);
 
-                    _familyDatabase = new FamilyDatabase();
+                        _childNameU.Text = _child[j];
 
-                    _familyDetails = _familyDatabase.GetFamilyDataByFamilyID(id);
-
-                    _motherNameU.Text = _familyDetails.motherName;
-                    _addressU.Text = _familyDetails.address;
-                    _fatherNameU.Text = _familyDetails.fatherName;
-
-                    _childNameU.Text = _familyDetails.childName.ToString();
-
+                    }
+                    _editTextChildnameU.Add(_childNameU);
                 }
 
 
+
+
             }
+            UIClickEvents();
 
 
         }
@@ -77,24 +83,24 @@ namespace Family
         {
 
             _update.Click += _update_Click;
-            _addChildU.Click += _addChildU_Click;
+           // _addChildU.Click += _addChildU_Click;
         }
 
-        private void _addChildU_Click(object sender, EventArgs e)
-        {
-            var inflater = LayoutInflater.From(this).Inflate(Resource.Layout.updateChildEdittextLayout, null);
-            _linearLayoutU.AddView(inflater, _linearLayoutU.ChildCount);
+        //private void _addchildu_click(object sender, eventargs e)
+        //{
+        //    var inflater = layoutinflater.from(this).inflate(resource.layout.updatechildedittextlayout, null);
+        //    _linearlayoutu.addview(inflater, _linearlayoutu.childcount);
 
 
-            for (int i = 0; i < _linearLayoutU.ChildCount; i++)
-            {
-                View _edittextView = _linearLayoutU.GetChildAt(i);
+        //    for (int i = 0; i < _linearlayoutu.childcount; i++)
+        //    {
+        //        view _edittextview = _linearlayoutu.getchildat(i);
 
-                _childNameU = _edittextView.FindViewById<EditText>(Resource.Id.editTextUpdateChildName);
-                _editTextChildnameU.Add(_childNameU);
+        //        _childnameu = _edittextview.findviewbyid<edittext>(resource.id.edittextupdatechildname);
+        //        _edittextchildnameu.add(_childnameu);
 
-            }
-        }
+        //    }
+        //}
 
         private void _update_Click(object sender, EventArgs e)
         {
@@ -105,15 +111,31 @@ namespace Family
 
                 _familyDetails.address = _addressU.Text;
 
+
                 for (int i = 0; i < _editTextChildnameU.Count; i++)
                 {
+                    if (_editTextChildnameU[i] != null)
+                    {
 
-                    _familyDetails.childName = _editTextChildnameU[i].Text.ToString();
+                        _childDataU = new ChildData();
+
+                        _childDataU.childName = _editTextChildnameU[i].Text.ToString();
+                        _childDataU.familyid = _familyDetails.id;
+                       _childDataU.childid = i + 1;
+
+                        //var insertChild = _childDatabase.InstertChild(_childData);
+
+                        _childDatasU.Add(_childDataU);
+
+                    }
+
 
                 }
 
+                _familyDetails.ChildData = _childDatasU;
 
-                var updated = _familyDatabase.UpdateData(_familyDetails);
+
+                var updated = _familyDatabase.UpdateFamily(_familyDetails, ids);
                 if (updated)
                 {
                     Toast.MakeText(this, "Data Updated Successfully", ToastLength.Short).Show();

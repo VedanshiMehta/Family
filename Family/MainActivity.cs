@@ -11,16 +11,16 @@ using System.Collections.Generic;
 
 namespace Family
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme",MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
         private FloatingActionButton _floatingActionButtonAdd;
         private RecyclerView _recyclerViewFamilyDetails;
         private RecyclerView.LayoutManager _layoutManagerFamilyDetails;
         private FamilyAdapter _familyAdapter;
-        private List<FamilyDetails> _familylist;
+        private List<FamilyDetail> _familylist;
         private FamilyDatabase _familyDatabase;
-      
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -29,7 +29,7 @@ namespace Family
             SetContentView(Resource.Layout.activity_main);
             UIReferences();
             UIClickEvents();
-            
+
 
         }
 
@@ -54,22 +54,27 @@ namespace Family
             _layoutManagerFamilyDetails = new LinearLayoutManager(this);
             _recyclerViewFamilyDetails.SetLayoutManager(_layoutManagerFamilyDetails);
 
-            _familyAdapter = new FamilyAdapter(_familylist,this);
+            _familyAdapter = new FamilyAdapter(_familylist, this);
             _recyclerViewFamilyDetails.SetAdapter(_familyAdapter);
 
         }
 
-        private List<FamilyDetails> GetFamilyDetails()
+        private List<FamilyDetail> GetFamilyDetails()
         {
-            _familyDatabase = new FamilyDatabase();
-            var family = _familyDatabase.GetData();
+           
+                _familyDatabase = new FamilyDatabase();
+            _familylist = new List<FamilyDetail>();
+            var family = _familyDatabase.ReadFamily();
 
-            _familylist = new List<FamilyDetails>();
-        
-            _familylist.AddRange(family);
+               
+           
+                _familylist.AddRange(family);
 
-            return _familylist;
+                return _familylist;
+
             
+           
+
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

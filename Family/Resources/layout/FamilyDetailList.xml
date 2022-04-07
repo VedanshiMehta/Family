@@ -9,7 +9,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size150"
+        android:layout_height="wrap_content"
         android:id="@+id/cardViewFamilyDetails"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +99,6 @@
                 android:textColor="@color/colorBlack"
                 app:layout_constraintTop_toBottomOf="@+id/textViewChildName"
                 app:layout_constraintStart_toEndOf="@+id/textViewAddress"
-                app:layout_constraintEnd_toStartOf="@drawable/ic_delete"
                 android:layout_marginLeft="@dimen/size10"/>
 
             <ImageView

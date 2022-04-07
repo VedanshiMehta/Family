@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,11 @@ using System.Text;
 
 namespace Family.Model
 {
-   [Table("FamilyDetails")]
-    class FamilyDetails
+    [Table("FamilyDetail")]
+    class FamilyDetail
     {
-       
-       [PrimaryKey,AutoIncrement]
-        public int fid { get; set; }
+        [PrimaryKey, AutoIncrement, Column("Fid")]
+        public int id { get; set; }
 
         [Column("FatherName")]
         public string fatherName { get; set; }
@@ -28,9 +28,7 @@ namespace Family.Model
         [Column("Address")]
         public string address { get; set; }
 
-        [Column("ChildName")]
-        public string childName { get; set; }
-
-
+        [OneToMany]
+        public List<ChildData> ChildData { get; set; }
     }
 }

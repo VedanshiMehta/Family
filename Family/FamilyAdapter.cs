@@ -16,14 +16,13 @@ namespace Family
 {
     class FamilyAdapter : RecyclerView.Adapter
     {
-        private List<FamilyDetails> familylist;
+        private List<FamilyDetail> familylist;
         private MainActivity mainActivity;
         private FamilyDatabase _familyDatabase;
-        private FamilyDetails _familyDetails;
-        private List<string> _chlid = new List<string>();
+        private FamilyDetail _familyDetails;
 
 
-        public FamilyAdapter(List<FamilyDetails> familylist, MainActivity mainActivity)
+        public FamilyAdapter(List<FamilyDetail> familylist, MainActivity mainActivity)
         {
             this.familylist = familylist;
             this.mainActivity = mainActivity;
@@ -38,7 +37,7 @@ namespace Family
             familyViewHolder._cardViewFamilyDetails.Click += (s, e) =>
             {
                 Intent update = new Intent(mainActivity, typeof(UpdateFamily));
-                update.PutExtra("Familyid", familylist[position].fid);
+                update.PutExtra("Familyid", familylist[position].id);
                 mainActivity.StartActivity(update);
 
 
@@ -47,10 +46,10 @@ namespace Family
             familyViewHolder._delete.Click += (s, e) =>
             {
                 _familyDatabase = new FamilyDatabase();
-                _familyDetails = _familyDatabase.GetFamilyDataByFamilyID(familylist[position].fid);
+                _familyDetails = _familyDatabase.GetByFamilyId(familylist[position].id);
                 if (_familyDetails != null)
                 {
-                    var deleted = _familyDatabase.DeleteData(_familyDetails);
+                    var deleted = _familyDatabase.DeleteFamily(_familyDetails);
                     if (deleted)
                     {
                         Toast.MakeText(mainActivity, "Data Deleted Successfully", ToastLength.Short).Show();
@@ -93,13 +92,16 @@ namespace Family
 
             }
 
-            internal void BindData(FamilyDetails familyDetails)
+            internal void BindData(FamilyDetail familyDetails)
             {
 
 
                 _fathersName.Text = familyDetails.fatherName;
                 _mothersName.Text = familyDetails.motherName;
-                _childsName.Text = familyDetails.childName;
+
+                _childsName.Text = string.Join("\n", familyDetails.ChildData.Select(x => x.childName).ToList());
+                
+                
                 _addresss.Text = familyDetails.address;
 
 
